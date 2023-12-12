@@ -1,5 +1,5 @@
 <?php
-
+    //array con tutti gli hotel
     $hotels = [
 
         [
@@ -42,6 +42,35 @@
 
 ?>
 
+<?php
+    //array degli hotel senza parcheggio
+    $hotels_nopark = []; 
+    //array degli hotel con parcheggio
+    $hotels_park = [];
+
+    foreach($hotels as $hotel){
+        if($hotel['parking']){
+            $hotels_park[] = $hotel;
+        }else{
+            $hotels_nopark[] = $hotel;
+        }
+    }
+    //var_dump($hotels_park);
+    //var_dump($hotels_nopark);
+?>
+
+<?php 
+    //variabile contenente la scelta fatta
+    $result =  $_GET['parking'] ;
+    //var_dump($result);
+    if($result === ''){
+        $array = $hotels;
+    }elseif($result === 'true'){
+        $array = $hotels_park;
+    }else{
+        $array = $hotels_nopark;
+    } 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,6 +83,18 @@
   
 </head>
 <body>
+    
+    <form action="index.php" method="get">
+        <div class="input-group" style="width: 40%">
+            <label for="parking" class="input-group-text">Seleziona il tipo di hotel </label>
+            <select class="form-select" id="parking" name="parking">
+                <option value="" selected>Tutti </option>
+                <option value="true">Hotel con parcheggio</option>
+                <option value="false">Hotel senza parcheggio</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Invia</button>
+        </div>
+    </form>
 
     <?php //foreach ($hotels as $hotel ) { ?>
         <!-- <section>
@@ -83,7 +124,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($hotels as $hotel ) { ?>
+                <?php foreach ($array as $hotel ) { ?>
                     <tr>
                     <th scope="row"><?php echo $hotel['name'] ?></th>
                     <td><?php echo $hotel['description'] ?></td>
